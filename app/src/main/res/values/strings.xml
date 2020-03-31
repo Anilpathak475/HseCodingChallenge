@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Hse</string>
+    <string name="database">hse.db</string>
+</resources>
