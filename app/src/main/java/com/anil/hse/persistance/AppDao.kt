@@ -1,22 +1,14 @@
 package com.anil.hse.persistance
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.anil.hse.base.BaseDao
 import com.anil.hse.persistance.entitiy.CartEntity
 
 @Dao
-interface CartDao {
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(cartEntity: CartEntity)
+interface CartDao : BaseDao<CartEntity> {
 
-    @Query("SELECT * FROM cart")
-    fun getCartItems(): List<CartEntity>
-
-    @Query(" DELETE FROM cart")
-    fun deleteAll()
-
-    @Query(" DELETE FROM cart where id=:id")
-    fun deleteItem(id: Int)
+    @Query("SELECT * FROM cart where isCheckOutDone=:status")
+    fun getCartItems(status: Boolean = false): LiveData<List<CartEntity>>
 }

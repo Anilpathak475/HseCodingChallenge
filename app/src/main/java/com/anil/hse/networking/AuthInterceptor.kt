@@ -4,7 +4,7 @@ import okhttp3.Headers
 import okhttp3.Interceptor
 import okhttp3.Response
 
-class AuthInterceptor() : Interceptor {
+class AuthInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         var req = chain.request()
         val builder: Headers.Builder = Headers.Builder()

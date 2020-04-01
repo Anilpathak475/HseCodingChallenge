@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.anil.hse.R
 import com.anil.hse.model.product.Product
-import com.anil.hse.utild.LoadingStatus
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.item_product.view.*
 
@@ -24,24 +23,24 @@ class ProductAdapter(
         return ProductViewHolder(layoutInflater.inflate(R.layout.item_product, parent, false))
     }
 
-    private var networkState: LoadingStatus? = null
-
-
-    private fun hasExtraRow(): Boolean {
-        return networkState != null && networkState !== LoadingStatus.loading()
-    }
-
     override fun onBindViewHolder(vh: ProductViewHolder, position: Int) {
         val product = getItem(position)
         product?.let {
             vh.itemView.textViewProductName.text = product.nameShort
-            vh.itemView.textViewPrice.text = product.productPrice.price.toString()
-            Glide
-                .with(vh.itemView)
-                .load("https://pic.hse24-dach.net/media/de/products/" + product.imageUris.first() + "pics480.jpg")
-                .centerCrop()
-                .placeholder(R.drawable.loading)
-                .into(vh.itemView.imageViewProduct)
+            vh.itemView.textViewPrice.text =
+                vh.itemView.resources.getString(
+                    R.string.price,
+                    product.productPrice.price.toString()
+                )
+            product.imageUris.isNotEmpty().let {
+                Glide
+                    .with(vh.itemView)
+                    .load("https://pic.hse24-dach.net/media/de/products/" + product.imageUris.first() + "pics480.jpg")
+                    .centerCrop()
+                    .placeholder(R.drawable.loading)
+                    .into(vh.itemView.imageViewProduct)
+            }
+
             vh.itemView.setOnClickListener { onSelected(product) }
             vh.itemView.buttonAddRemove.setOnClickListener {
                 addToCart(product)

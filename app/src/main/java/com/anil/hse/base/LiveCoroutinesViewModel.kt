@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.anil.hse.base.recyclerview
+package com.anil.hse.base
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
@@ -24,9 +24,9 @@ import kotlinx.coroutines.Dispatchers
 
 abstract class LiveCoroutinesViewModel : ViewModel() {
 
-    inline fun <T> launchOnViewModelScope(crossinline block: suspend () -> LiveData<T>): LiveData<T> {
-        return liveData(viewModelScope.coroutineContext + Dispatchers.IO) {
-            emitSource(block())
-        }
+  inline fun <T> launchOnViewModelScope(crossinline block: suspend () -> LiveData<T>): LiveData<T> {
+    return liveData(viewModelScope.coroutineContext + Dispatchers.IO) {
+      emitSource(block())
     }
+  }
 }

@@ -13,11 +13,8 @@ val persistenceModule = module {
                 androidApplication(), AppDatabase::class.java,
                 androidApplication().getString(R.string.database)
             )
-            .allowMainThreadQueries()
-            .fallbackToDestructiveMigration()
             .build()
     }
 
-   // single { get<AppDatabase>().categoryDao() }
     single { get<AppDatabase>().cartDao() }
 }

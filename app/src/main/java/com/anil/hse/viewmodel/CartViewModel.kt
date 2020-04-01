@@ -2,40 +2,42 @@ package com.anil.hse.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import com.anil.hse.Coroutines
-import com.anil.hse.persistance.CartDao
+import androidx.lifecycle.switchMap
+import com.anil.hse.base.LiveCoroutinesViewModel
 import com.anil.hse.persistance.entitiy.CartEntity
+import com.anil.hse.repository.CartRepository
 
 class CartViewModel constructor(
-    private val cartDao: CartDao
-) : ViewModel() {
+    private val cartRepository: CartRepository
+) : LiveCoroutinesViewModel() {
 
+    val cart: LiveData<List<CartEntity>>
     private var posterFetchingLiveData: MutableLiveData<Boolean> = MutableLiveData()
 
-    private val _cart = MutableLiveData<List<CartEntity>>()
-    val cart: LiveData<List<CartEntity>> get() = _cart
-
-    val toastLiveData: MutableLiveData<String> = MutableLiveData()
-
     init {
-        reloadCartItems()
-    }
-
-    fun updateCart(cartEntity: CartEntity) {
-        Coroutines.io {
-            if (cartEntity.quantity > 0)
-                cartDao.insert(cartEntity)
-            else
-                cartDao.deleteItem(cartEntity.id)
+        cart = this.posterFetchingLiveData.switchMap {
+            launchOnViewModelScope {
+                this.cartRepository.load()
+            }
         }
     }
 
-    private fun reloadCartItems() {
-        Coroutines.ioThenMain({
-            cartDao.getCartItems()
-        }, {
-            it?.let { items -> _cart.postValue(items) }
-        })
+    fun loadCart() = this.posterFetchingLiveData.postValue(true)
+    fun updateCart(cartEntity: CartEntity) {
+        cartRepository.update(cartEntity)
+    }
+
+
+    fun checkout() {
+        cart.value?.apply {
+            cartRepository.checkout(this)
+        }
+    }
+
+
+    fun clearCart() {
+        cart.value?.let {
+            cartRepository.clear(it)
+        }
     }
 }

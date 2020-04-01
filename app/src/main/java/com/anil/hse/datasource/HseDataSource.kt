@@ -35,11 +35,9 @@ class HseDataSource(
                 }
                 is ApiResponse.Failure.Error -> {
                     updateState(State.ERROR)
-                    // setRetry(Action { loadInitial(params, callback) })
                 }
                 is ApiResponse.Failure.Exception -> {
                     updateState(State.ERROR)
-                    //  setRetry(Action { loadInitial(params, callback) })            }
                 }
             }
         }
@@ -60,11 +58,9 @@ class HseDataSource(
                 }
                 is ApiResponse.Failure.Error -> {
                     updateState(State.ERROR)
-                    // setRetry(Action { loadInitial(params, callback) })
                 }
                 is ApiResponse.Failure.Exception -> {
                     updateState(State.ERROR)
-                    //  setRetry(Action { loadInitial(params, callback) })            }
                 }
             }
         }
@@ -76,20 +72,4 @@ class HseDataSource(
     private fun updateState(state: State) {
         this.state.postValue(state)
     }
-
-    /* fun retry() {
-         if (retryCompletable != null) {
-             compositeDisposable.add(
-                 retryCompletable!!
-                     .subscribeOn(Schedulers.io())
-                     .observeOn(AndroidSchedulers.mainThread())
-                     .subscribe()
-             )
-         }
-     }
-
-     private fun setRetry(action: Action?) {
-         retryCompletable = if (action == null) null else Completable.fromAction(action)
-     }
- */
 }

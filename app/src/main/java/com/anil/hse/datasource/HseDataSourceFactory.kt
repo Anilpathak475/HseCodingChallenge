@@ -7,14 +7,15 @@ import com.anil.hse.model.product.Product
 class HseDataSourceFactory(
     private val hseDataSource: HseDataSource
 ) : DataSource.Factory<Int, Product>() {
+    val hseDataSourceLiveData = MutableLiveData<HseDataSource>()
 
-    val newsDataSourceLiveData = MutableLiveData<HseDataSource>()
     override fun create(): DataSource<Int, Product> {
-        newsDataSourceLiveData.postValue(hseDataSource)
+        hseDataSourceLiveData.postValue(hseDataSource)
         return hseDataSource
     }
 
     fun setCatId(catId: String) {
-        this.hseDataSource.catId = catId
+        hseDataSource.catId = catId
     }
+
 }

@@ -16,5 +16,6 @@ data class CartEntity(
     var quantity: Int,
     @ColumnInfo(name = "timeStamp")
     @Nullable
-    var time: Long
+    var time: Long,
+    var isCheckOutDone: Boolean = false
 )
