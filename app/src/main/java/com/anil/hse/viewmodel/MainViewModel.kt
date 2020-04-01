@@ -1,11 +1,12 @@
 package com.anil.hse.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.paging.LivePagedListBuilder
+import androidx.paging.PagedList
 import com.anil.hse.Coroutines
-import com.anil.hse.model.category.Category
+import com.anil.hse.base.recyclerview.LiveCoroutinesViewModel
+import com.anil.hse.datasource.HseDataSourceFactory
 import com.anil.hse.model.product.Product
 import com.anil.hse.networking.ApiResponse
 import com.anil.hse.networking.HseClient
@@ -15,15 +16,14 @@ import com.anil.hse.persistance.entitiy.CartEntity
 
 class MainViewModel constructor(
     private val hseClient: HseClient,
-    private val cartDao: CartDao
-) : ViewModel() {
+    private val cartDao: CartDao,
+    private val hseDataSourceFactory: HseDataSourceFactory
+) : LiveCoroutinesViewModel() {
 
     private var posterFetchingLiveData: MutableLiveData<Boolean> = MutableLiveData()
-    private val _categories = MutableLiveData<List<Category>>()
-    val categories: LiveData<List<Category>> get() = _categories
 
     private val _products = MutableLiveData<List<Product>>()
-    val products: LiveData<List<Product>> get() = _products
+    var products: LiveData<PagedList<Product>>
 
     private val _product = MutableLiveData<Product>()
     val product: LiveData<Product> get() = _product
@@ -35,6 +35,16 @@ class MainViewModel constructor(
 
     init {
         reloadCartItems()
+        val config = PagedList.Config.Builder()
+            .setPageSize(10)
+            .setInitialLoadSizeHint(10)
+            .setEnablePlaceholders(false)
+            .build()
+        products = LivePagedListBuilder(hseDataSourceFactory, config).build()
+    }
+
+    fun setCategory(catId: String) {
+        hseDataSourceFactory.setCatId(catId)
     }
 
     private fun reloadCartItems() {
@@ -43,26 +53,6 @@ class MainViewModel constructor(
         }, {
             it?.let { items -> _cart.postValue(items) }
         })
-    }
-
-    fun fetchCategories() {
-        posterFetchingLiveData.postValue(true)
-        hseClient.fetchCategories { response ->
-            posterFetchingLiveData.postValue(false)
-            when (response) {
-                is ApiResponse.Success -> {
-                    response.data?.let {
-                        _categories.postValue(it.children)
-                    }
-                }
-                is ApiResponse.Failure.Error -> {
-                    toastLiveData.postValue(response.message())
-                }
-                is ApiResponse.Failure.Exception -> {
-                    toastLiveData.postValue(response.message())
-                }
-            }
-        }
     }
 
     fun fetchProductsByCat(categoryId: String) {
@@ -108,19 +98,14 @@ class MainViewModel constructor(
     fun addItemInCart(product: Product, quantity: Int) {
         val isAlreadyAdded =
             cart.value?.firstOrNull { cartEntity -> cartEntity.productId == product.sku }
-        Coroutines.ioThenMain({
+        Coroutines.io {
             isAlreadyAdded?.let {
                 it.quantity = quantity
                 cartDao.insert(it)
             } ?: run {
                 addIntoCart(product, quantity)
             }
-            cartDao.getCartItems()
-        }, {
-            it?.let { items -> _cart.postValue(items) }
-        })
-
-
+        }
     }
 
     private fun addIntoCart(product: Product, quantity: Int) {
@@ -145,14 +130,11 @@ class MainViewModel constructor(
     fun removeItemFromCart(product: Product) {
         val productInCart =
             cart.value?.firstOrNull { cartEntity -> cartEntity.productId == product.sku }
-        Coroutines.ioThenMain({
+        Coroutines.io {
             productInCart?.let {
                 cartDao.deleteItem(it.id)
             }
-            cartDao.getCartItems()
-        }, {
-            it?.let { items -> _cart.postValue(items) }
-        })
-
+            reloadCartItems()
+        }
     }
 }

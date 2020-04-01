@@ -19,19 +19,20 @@ class CartViewModel constructor(
     val toastLiveData: MutableLiveData<String> = MutableLiveData()
 
     init {
-        Coroutines.ioThenMain({
-            cartDao.getCartItems()
-        }, {
-            it?.let { items -> _cart.postValue(items) }
-        })
+        reloadCartItems()
     }
 
     fun updateCart(cartEntity: CartEntity) {
-        Coroutines.ioThenMain({
+        Coroutines.io {
             if (cartEntity.quantity > 0)
                 cartDao.insert(cartEntity)
             else
                 cartDao.deleteItem(cartEntity.id)
+        }
+    }
+
+    private fun reloadCartItems() {
+        Coroutines.ioThenMain({
             cartDao.getCartItems()
         }, {
             it?.let { items -> _cart.postValue(items) }
