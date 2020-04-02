@@ -10,7 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.anil.hse.R
-import com.anil.hse.model.product.Product
+import com.anil.hse.model.Product
 import com.anil.hse.ui.adapter.ProductAdapter
 import com.anil.hse.viewmodel.ProductsViewModel
 import kotlinx.android.synthetic.main.fragment_products.*
@@ -26,6 +26,7 @@ class ProductsFragment : Fragment() {
             { onProductDetail(it) },
             { onProductAddToCart(it) })
     }
+
     private val categoryId by lazy {
         arguments?.let { ProductsFragmentArgs.fromBundle(it).categoryId }
     }
@@ -39,6 +40,17 @@ class ProductsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         categoryId?.let { productsViewModel.setCategory(it) }
+        observeData()
+
+        recyclerviewProducts.apply {
+            adapter = this@ProductsFragment.adapter
+            layoutManager = LinearLayoutManager(this@ProductsFragment.context)
+        }
+
+        layoutCart.setOnClickListener { navigation.navigate(ProductsFragmentDirections.actionProductsFragmentToCartFragment()) }
+    }
+
+    private fun observeData() {
         productsViewModel.products.observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
         })
@@ -56,13 +68,6 @@ class ProductsFragment : Fragment() {
         productsViewModel.cartNotification.observe(viewLifecycleOwner, Observer {
             showError(it)
         })
-
-        recyclerviewProducts.apply {
-            adapter = this@ProductsFragment.adapter
-            layoutManager = LinearLayoutManager(this@ProductsFragment.context)
-        }
-
-        layoutCart.setOnClickListener { navigation.navigate(ProductsFragmentDirections.actionProductsFragmentToCartFragment()) }
     }
 
     private fun showError(error: String) =

@@ -1,7 +1,6 @@
 package com.anil.hse.ui.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.anil.hse.R
 import com.anil.hse.base.gone
 import com.anil.hse.base.visible
-import com.anil.hse.model.product.Product
+import com.anil.hse.model.Product
 import com.anil.hse.networking.Resource
 import com.anil.hse.networking.Status
 import com.anil.hse.ui.adapter.ProductImageAdapter
@@ -25,11 +24,7 @@ class ProductDetailsFragment : Fragment() {
     private val productsViewModel: ProductsViewModel by viewModel()
 
     private val productId by lazy {
-        Log.d("argumets", arguments.toString())
-        arguments?.let { ProductDetailsFragmentArgs.fromBundle(it).productId } ?: run {
-            showError("empty product id")
-            ""
-        }
+        arguments?.let { ProductDetailsFragmentArgs.fromBundle(it).productId }
     }
 
     private val imageAdapter by lazy {
@@ -42,10 +37,9 @@ class ProductDetailsFragment : Fragment() {
                 it.data?.let { product ->
                     productName.text = product.nameShort
                     textViewCategory.text = product.brandNameLong
-                    product.productPrice?.let { productPrice ->
-                        textViewPrice.text =
-                            getString(R.string.price, productPrice.price.toString())
-                    }
+                    textViewPrice.text =
+                        getString(R.string.price, product.productPrice.price.toString())
+
                     textViewDescription.text =
                         product.longDescription
                     imageAdapter.urls = product.imageUris
@@ -98,8 +92,7 @@ class ProductDetailsFragment : Fragment() {
         productsViewModel.cartNotification.observe(viewLifecycleOwner, Observer {
             showError(it)
         })
-        productId.let {
-            Log.d("Product Id", productId)
+        productId?.let {
             productsViewModel.fetchProductProductDetail(it)
         }
     }

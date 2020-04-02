@@ -23,17 +23,14 @@ class CartViewModel constructor(
     }
 
     fun loadCart() = this.loadCartData.postValue(true)
-    fun updateCart(cart: Cart) {
+    fun updateCart(cart: Cart) =
         cartRepository.update(cart)
-    }
-
 
     fun checkout() {
         cart.value?.apply {
             cartRepository.checkout(this)
         }
     }
-
 
     fun clearCart() {
         cart.value?.let {

@@ -6,8 +6,7 @@ import com.anil.hse.persistance.entitiy.Cart
 
 class CartRepository constructor(
     private val cartDao: CartDao
-) : Repository {
-    override var isLoading: Boolean = true
+) {
 
     fun load() =
         cartDao.getCartItems()

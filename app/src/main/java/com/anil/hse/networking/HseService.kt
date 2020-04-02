@@ -1,8 +1,8 @@
 package com.anil.hse.networking
 
-import com.anil.hse.model.category.Category
-import com.anil.hse.model.product.Product
-import com.anil.hse.model.product.ProductResponse
+import com.anil.hse.model.Category
+import com.anil.hse.model.Product
+import com.anil.hse.model.ProductResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query

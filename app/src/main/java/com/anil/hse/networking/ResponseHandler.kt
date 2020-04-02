@@ -1,5 +1,6 @@
 package com.anil.hse.networking
 
+import android.util.Log
 import retrofit2.HttpException
 import java.net.SocketTimeoutException
 
@@ -9,10 +10,13 @@ enum class ErrorCodes(val code: Int) {
 
 open class ResponseHandler {
     fun <T : Any> handleSuccess(data: T): Resource<T> {
+        Log.d("Response ==>", data.toString())
         return Resource.success(data)
     }
 
     fun <T : Any> handleException(e: Exception): Resource<T> {
+        Log.d("Response Exception ==>", "" + e.localizedMessage)
+        e.printStackTrace()
         return when (e) {
             is HttpException -> Resource.error(getErrorMessage(e.code()), null)
             is SocketTimeoutException -> Resource.error(

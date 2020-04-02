@@ -2,7 +2,7 @@ package com.anil.hse.datasource
 
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.DataSource
-import com.anil.hse.model.product.Product
+import com.anil.hse.model.Product
 
 class HseDataSourceFactory(
     private val hseDataSource: HseDataSource
@@ -17,5 +17,4 @@ class HseDataSourceFactory(
     fun setCatId(catId: String) {
         hseDataSource.catId = catId
     }
-
 }

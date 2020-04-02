@@ -1,4 +1,4 @@
-package com.anil.hse.model.category
+package com.anil.hse.model
 
 data class Category(
     val categoryId: Int = 0,

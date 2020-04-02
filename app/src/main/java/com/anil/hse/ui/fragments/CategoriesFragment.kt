@@ -10,7 +10,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.anil.hse.R
-import com.anil.hse.model.category.Category
+import com.anil.hse.model.Category
 import com.anil.hse.networking.Resource
 import com.anil.hse.networking.Status
 import com.anil.hse.ui.adapter.CategoryAdapter

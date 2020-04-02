@@ -1,6 +1,5 @@
-package com.anil.hse.model.product
+package com.anil.hse.model
 
-import com.anil.hse.model.category.Category
 import com.google.gson.annotations.SerializedName
 
 data class ProductResponse(

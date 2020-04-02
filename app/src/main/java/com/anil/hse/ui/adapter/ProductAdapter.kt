@@ -7,8 +7,7 @@ import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.anil.hse.R
-import com.anil.hse.base.gone
-import com.anil.hse.model.product.Product
+import com.anil.hse.model.Product
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.item_product.view.*
 
@@ -18,50 +17,43 @@ class ProductAdapter(
 ) :
     PagedListAdapter<Product, ProductAdapter.ProductViewHolder>(ProductDiffCallback) {
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         return ProductViewHolder(layoutInflater.inflate(R.layout.item_product, parent, false))
     }
 
     override fun onBindViewHolder(vh: ProductViewHolder, position: Int) {
-        val product = getItem(position)
-        product?.let {
+        getItem(position)?.let { product ->
             vh.itemView.textViewProductName.text = product.nameShort
-            product.productPrice?.let {
-                vh.itemView.textViewPrice.text =
-                    vh.itemView.resources.getString(
-                        R.string.price,
-                        it.price.toString()
-                    )
-            }
-            with(product.imageUris.first()) {
+            vh.itemView.textViewPrice.text =
+                vh.itemView.resources.getString(
+                    R.string.price,
+                    product.productPrice.price.toString()
+                )
+
+            product.imageUris.firstOrNull()?.let { url ->
                 Glide
                     .with(vh.itemView)
                     .load(
                         vh.itemView.resources.getString(
                             R.string.imageUrl,
-                            this
+                            url
                         )
                     )
-                    .centerCrop()
                     .placeholder(R.drawable.loading)
                     .into(vh.itemView.imageViewProduct)
             }
-
             vh.itemView.setOnClickListener { onSelected(product) }
             vh.itemView.buttonAddRemove.setOnClickListener {
                 addToCart(product)
             }
-        } ?: run {
-            vh.itemView.gone()
         }
     }
 
     companion object {
         val ProductDiffCallback = object : DiffUtil.ItemCallback<Product>() {
             override fun areItemsTheSame(oldItem: Product, newItem: Product): Boolean {
-                return oldItem == newItem
+                return oldItem.sku == newItem.sku
             }
 
             override fun areContentsTheSame(oldItem: Product, newItem: Product): Boolean {
@@ -71,5 +63,4 @@ class ProductAdapter(
     }
 
     class ProductViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
-
 }

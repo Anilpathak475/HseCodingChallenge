@@ -1,8 +1,9 @@
 package com.anil.hse.repository
 
 import com.anil.hse.datasource.HseDataSourceFactory
-import com.anil.hse.model.product.Product
-import com.anil.hse.model.product.ProductResponse
+import com.anil.hse.model.Product
+import com.anil.hse.model.ProductPrice
+import com.anil.hse.model.ProductResponse
 import com.anil.hse.networking.HseService
 import com.anil.hse.networking.Resource
 import com.anil.hse.networking.ResponseHandler
@@ -25,10 +26,13 @@ class ProductRepositoryTest {
     private lateinit var hseDataSource: HseDataSourceFactory
     private lateinit var repository: ProductRepository
     private val productResponse = ProductResponse()
-    private val product = Product()
     private val categoryId = "12345678"
     private val validProductId = "12345678"
     private val invalidProductId = "some product Id"
+    private val product = Product(
+        sku = validProductId,
+        productPrice = ProductPrice()
+    )
     private val successResponse = Resource.success(product)
     private val errorResponse = Resource.error("Unauthorised", null)
 

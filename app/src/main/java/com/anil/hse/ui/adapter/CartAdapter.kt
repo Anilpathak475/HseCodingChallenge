@@ -23,22 +23,27 @@ class CartAdapter(
     }
 
     override fun onBindViewHolder(vh: CartViewHolder, position: Int) {
-        val cartEntity = cartItems[position]
-        vh.itemView.textViewCartProductName.text = cartEntity.productName
+        val cart = cartItems[position]
+        vh.itemView.textViewCartProductName.text = cart.productName
+        vh.itemView.textViewQuantity.text = cart.quantity.toString()
         vh.itemView.textViewCartPrice.text = vh.itemView.resources.getString(
             R.string.price,
-            cartEntity.price
+            cart.price
         )
         Glide
             .with(vh.itemView)
-            .load("https://pic.hse24-dach.net/media/de/products/" + cartEntity.imageUrl + "pics480.jpg")
-            .centerCrop()
+            .load(
+                vh.itemView.resources.getString(
+                    R.string.imageUrl,
+                    cart.imageUrl
+                )
+            )
+            .fitCenter()
             .placeholder(R.drawable.loading)
             .into(vh.itemView.imageViewCartProduct)
-        vh.itemView.setOnClickListener { this.onSelected(cartEntity) }
-        vh.itemView.textviewAdd.setOnClickListener { this.onAdded(cartEntity) }
-        vh.itemView.textViewQuantity.text = cartEntity.quantity.toString()
-        vh.itemView.textviewRemove.setOnClickListener { this.onRemove(cartEntity) }
+        vh.itemView.setOnClickListener { this.onSelected(cart) }
+        vh.itemView.textviewAdd.setOnClickListener { this.onAdded(cart) }
+        vh.itemView.textviewRemove.setOnClickListener { this.onRemove(cart) }
 
     }
 

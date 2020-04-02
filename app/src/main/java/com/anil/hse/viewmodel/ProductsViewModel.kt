@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.liveData
 import androidx.lifecycle.switchMap
 import com.anil.hse.base.LiveCoroutinesViewModel
-import com.anil.hse.model.product.Product
+import com.anil.hse.model.Product
 import com.anil.hse.networking.Resource
 import com.anil.hse.persistance.entitiy.Cart
 import com.anil.hse.repository.CartRepository
@@ -38,16 +38,16 @@ class ProductsViewModel constructor(
         }
     }
 
-    init {
-        this.loadProduct.postValue(true)
-    }
-
     val cart: LiveData<List<Cart>> by lazy {
         this.loadProduct.switchMap {
             launchOnViewModelScope {
                 this.cartRepository.load()
             }
         }
+    }
+
+    init {
+        this.loadProduct.postValue(true)
     }
 
     fun setCategory(catId: String) =
@@ -61,18 +61,18 @@ class ProductsViewModel constructor(
         } ?: run {
             cartRepository.add(createNewCartItem(product, quantity))
             result("Success")
-
         }
     }
 
     fun fetchProductProductDetail(productId: String) = this.productId.postValue(productId)
 
-    private fun createNewCartItem(product: Product, quantity: Int) = Cart(
-        productId = product.sku,
-        productName = product.nameShort,
-        price = product.productPrice?.price?.toString() ?: run { "10" },
-        quantity = quantity,
-        imageUrl = product.imageUris.first(),
-        time = System.currentTimeMillis()
-    )
+    private fun createNewCartItem(product: Product, quantity: Int) =
+        Cart(
+            productId = product.sku,
+            productName = product.nameShort,
+            price = product.productPrice.price.toString(),
+            quantity = quantity,
+            imageUrl = product.imageUris.first(),
+            time = System.currentTimeMillis()
+        )
 }

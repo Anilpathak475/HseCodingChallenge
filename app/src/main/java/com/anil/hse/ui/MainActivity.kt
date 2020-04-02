@@ -10,14 +10,4 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
     }
-
-    /*override fun onResume() {
-        super.onResume()
-        val navHostFragment = supportFragmentManager.fragments.first() as? NavHostFragment
-        navHostFragment?.let {
-            it.childFragmentManager.fragments.forEach { fragment ->
-                fragment.onResume()
-            }
-        }
-    }*/
 }

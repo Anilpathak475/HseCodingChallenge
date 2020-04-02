@@ -3,7 +3,8 @@ package com.anil.hse.viewModel
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import com.anil.hse.base.Coroutines
-import com.anil.hse.model.product.Product
+import com.anil.hse.model.Product
+import com.anil.hse.model.ProductPrice
 import com.anil.hse.networking.Resource
 import com.anil.hse.persistance.entitiy.Cart
 import com.anil.hse.repository.CartRepository
@@ -33,7 +34,12 @@ class ProductViewModelTest {
     private lateinit var cartObserver: Observer<Resource<List<Cart>>>
     private val validProductId = "321234"
     private val invalidProductInt = "qwerty"
-    private val productSuccessResource = Resource.success(Product(sku = validProductId))
+    private val productSuccessResource = Resource.success(
+        Product(
+            sku = validProductId,
+            productPrice = ProductPrice()
+        )
+    )
     private val errorResource = Resource.error("Unauthorised", null)
 
     @Rule

@@ -7,7 +7,7 @@ import androidx.paging.PagedList
 import com.anil.hse.datasource.HseDataSource
 import com.anil.hse.datasource.HseDataSourceFactory
 import com.anil.hse.datasource.State
-import com.anil.hse.model.product.Product
+import com.anil.hse.model.Product
 import com.anil.hse.networking.HseService
 import com.anil.hse.networking.Resource
 import com.anil.hse.networking.ResponseHandler
@@ -16,8 +16,7 @@ class ProductRepository constructor(
     private val hseService: HseService,
     private val responseHandler: ResponseHandler,
     private val hseDataSourceFactory: HseDataSourceFactory
-) : Repository {
-    override var isLoading: Boolean = true
+) {
 
     private val config by lazy {
         PagedList.Config.Builder()
@@ -38,7 +37,6 @@ class ProductRepository constructor(
 
     fun setCatId(catId: String) =
         hseDataSourceFactory.setCatId(catId)
-
 
     fun loadProductByCategories() = LivePagedListBuilder(hseDataSourceFactory, config).build()
     val state: LiveData<State> = Transformations.switchMap<HseDataSource,

@@ -3,7 +3,7 @@ package com.anil.hse.datasource
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
 import com.anil.hse.base.Coroutines
-import com.anil.hse.model.product.Product
+import com.anil.hse.model.Product
 import com.anil.hse.networking.HseService
 import com.anil.hse.networking.ResponseHandler
 
@@ -15,7 +15,6 @@ class HseDataSource(
     private val hseService: HseService,
     private val responseHandler: ResponseHandler
 ) : PageKeyedDataSource<Int, Product>() {
-
     var state: MutableLiveData<State> = MutableLiveData()
     var catId: String = ""
     override fun loadInitial(
@@ -51,9 +50,11 @@ class HseDataSource(
                 hseService.fetchProductsCategory(catId, params.key, params.requestedLoadSize)
             }, {
                 it?.let {
-                    responseHandler.handleSuccess(it).data?.products?.let { products ->
+                    responseHandler.handleSuccess(it).data?.let { products ->
+                        if (products.resultCount / 10 > params.key)
+                            updateState(State.DONE)
                         callback.onResult(
-                            products,
+                            products.products,
                             params.key + 1
                         )
                     }

@@ -1,6 +1,6 @@
 package com.anil.hse.repository
 
-import com.anil.hse.model.category.Category
+import com.anil.hse.model.Category
 import com.anil.hse.networking.HseService
 import com.anil.hse.networking.Resource
 import com.anil.hse.networking.ResponseHandler
@@ -38,7 +38,7 @@ class CategoryRepositoryTest {
     }
 
     @Test
-    fun `test getWeather when valid location is requested, then weather is returned`() =
+    fun `test get categories requested, then categories is returned`() =
         runBlocking {
             assertEquals(successResponse, repository.loadCategories())
         }

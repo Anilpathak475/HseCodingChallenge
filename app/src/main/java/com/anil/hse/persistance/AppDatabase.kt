@@ -11,8 +11,5 @@ import com.anil.hse.persistance.entitiy.Cart
 )
 abstract class AppDatabase : RoomDatabase() {
 
-/*
-    abstract fun categoryDao(): CategoryDao
-*/
     abstract fun cartDao(): CartDao
 }

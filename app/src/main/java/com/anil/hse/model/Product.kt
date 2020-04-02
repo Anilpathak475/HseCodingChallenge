@@ -1,6 +1,4 @@
-package com.anil.hse.model.product
-
-import java.util.*
+package com.anil.hse.model
 
 
 data class Product(
@@ -10,7 +8,7 @@ data class Product(
     val brandNameLong: String = "",
     val brandNameShort: String? = "",
     val categoryCode: String? = "",
-    val deliveryDate: Date? = Date(),
+    val deliveryDate: Any? = "",
     val deliveryText: String? = "",
     val deliveryTimeDays: Any? = "",
     val deliveryType: Any? = "",
@@ -24,7 +22,7 @@ data class Product(
     val nameShort: String = "",
     val notAllowedInCountry: Boolean = false,
     val picCount: Int? = 0,
-    val productPrice: ProductPrice? = null,
+    val productPrice: ProductPrice,
     val reviewers: Int? = 0,
     val reviewsForbidden: Boolean? = false,
     val sku: String = "",
@@ -50,18 +48,18 @@ data class Variation(
 )
 
 data class ProductPrice(
-    val basePrice: Any,
-    val basePriceInfo: Any,
-    val basePriceRefAmount: Any,
-    val basePriceUnit: Any,
-    val country: Any,
-    val currency: String,
-    val percentDiscount: String,
-    val price: Double,
-    val priceDiscount: Float,
-    val priceLabel: String,
-    val priceValidTo: String,
-    val referencePrice: Double,
-    val referencePriceLabel: String,
-    val shippingCosts: Double
+    val basePrice: String = "",
+    val basePriceInfo: Any? = "",
+    val basePriceRefAmount: Any? = "",
+    val basePriceUnit: Any? = "",
+    val country: Any? = "",
+    val currency: String? = "",
+    val percentDiscount: String? = "",
+    val price: Double = 0.0,
+    val priceDiscount: Float = 0f,
+    val priceLabel: String = "",
+    val priceValidTo: String = "",
+    val referencePrice: Double = 0.0,
+    val referencePriceLabel: String = "",
+    val shippingCosts: Double = 0.0
 )

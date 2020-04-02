@@ -1,6 +1,6 @@
 package com.anil.hse.networking
 
-import com.anil.hse.model.product.Product
+import com.anil.hse.model.Product
 import com.nhaarman.mockitokotlin2.mock
 import org.junit.Assert.assertEquals
 import org.junit.Before
