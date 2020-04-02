@@ -1,9 +1,6 @@
 package com.anil.hse.di
 
-import com.anil.hse.datasource.HseDataSource
-import com.anil.hse.datasource.HseDataSourceFactory
 import com.anil.hse.networking.AuthInterceptor
-import com.anil.hse.networking.HseClient
 import com.anil.hse.networking.HseService
 import com.anil.hse.networking.ResponseHandler
 import okhttp3.OkHttpClient
@@ -19,9 +16,6 @@ val networkModule = module {
     factory { provideHseApi(get()) }
     factory { provideLoggingInterceptor() }
     single { provideRetrofit(get()) }
-    factory { provideHseClient(get()) }
-    factory { provideHseDataSource(get()) }
-    factory { provideHseDataSourceFactory(get()) }
     factory { ResponseHandler() }
 }
 
@@ -45,7 +39,3 @@ private fun provideLoggingInterceptor(): HttpLoggingInterceptor {
 }
 
 private fun provideHseApi(retrofit: Retrofit): HseService = retrofit.create(HseService::class.java)
-private fun provideHseClient(hseService: HseService): HseClient = HseClient(hseService)
-private fun provideHseDataSource(hseClient: HseClient): HseDataSource = HseDataSource(hseClient)
-private fun provideHseDataSourceFactory(hseDataSource: HseDataSource): HseDataSourceFactory =
-    HseDataSourceFactory(hseDataSource)

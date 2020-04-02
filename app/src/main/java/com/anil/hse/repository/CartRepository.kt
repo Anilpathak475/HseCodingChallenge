@@ -32,9 +32,7 @@ class CartRepository constructor(
             add(cartEntity)
         else
             delete(cartEntity)
-
     }
-
 
     fun checkout(cartItems: List<CartEntity>) {
         cartItems.apply {
@@ -44,7 +42,6 @@ class CartRepository constructor(
             }
         }
     }
-
 
     fun clear(cartItems: List<CartEntity>) {
         delete(cartItems)

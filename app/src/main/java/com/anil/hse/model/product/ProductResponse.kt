@@ -4,18 +4,18 @@ import com.anil.hse.model.category.Category
 import com.google.gson.annotations.SerializedName
 
 data class ProductResponse(
-    val activeSorting: ActiveSorting,
-    val brands: List<Brand>,
-    val cachingForbidden: Boolean,
-    val categories: List<Category>,
-    val displayName: Any,
-    val filter: Filter,
-    val paging: Paging,
+    val activeSorting: ActiveSorting? = null,
+    val brands: List<Brand> = emptyList(),
+    val cachingForbidden: Boolean? = false,
+    val categories: List<Category>? = emptyList(),
+    val displayName: String = "",
+    val filter: Filter? = null,
+    val paging: Paging? = null,
     @SerializedName("productResults")
-    val products: List<Product>,
-    val resultCount: Int,
-    val sortings: List<Sorting>,
-    val topShop: String
+    val products: List<Product> = emptyList(),
+    val resultCount: Int = 0,
+    val sortings: List<Sorting> = emptyList(),
+    val topShop: String = ""
 )
 
 data class Paging(
@@ -23,6 +23,7 @@ data class Paging(
     val page: Int,
     val pageSize: Int
 )
+
 data class Sorting(
     val displayName: String,
     val name: String,

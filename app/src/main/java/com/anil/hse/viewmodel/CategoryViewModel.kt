@@ -1,26 +1,25 @@
 package com.anil.hse.viewmodel
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.liveData
 import androidx.lifecycle.switchMap
 import com.anil.hse.base.LiveCoroutinesViewModel
-import com.anil.hse.model.category.Category
+import com.anil.hse.networking.Resource
 import com.anil.hse.repository.CategoryRepository
+import kotlinx.coroutines.Dispatchers
 
-class CategoryViewMode constructor(
+class CategoryViewModel constructor(
     private val categoryRepository: CategoryRepository
 ) : LiveCoroutinesViewModel() {
     private var posterFetchingLiveData: MutableLiveData<Boolean> = MutableLiveData()
-    val categories: LiveData<List<Category>>
     val toastLiveData: MutableLiveData<String> = MutableLiveData()
 
-    init {
-        categories = this.posterFetchingLiveData.switchMap {
-            launchOnViewModelScope {
-                categoryRepository.loadCategories { this.toastLiveData.postValue(it) }
-            }
+    var categories = posterFetchingLiveData.switchMap {
+        liveData(Dispatchers.IO) {
+            emit(Resource.loading(null))
+            emit(categoryRepository.loadCategories())
         }
     }
 
-    fun fetchCategories() = this.posterFetchingLiveData.postValue(true)
+    fun fetchCategories() = posterFetchingLiveData.postValue(true)
 }

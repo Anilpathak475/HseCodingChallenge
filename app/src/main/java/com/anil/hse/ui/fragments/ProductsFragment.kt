@@ -36,10 +36,6 @@ class ProductsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         categoryId?.let { productsViewModel.setCategory(it) }
-        productsViewModel.state.observe(viewLifecycleOwner, Observer {
-            //  progress_bar.visibility = if (viewModel.listIsEmpty() && state == State.LOADING) View.VISIBLE else View.GONE
-
-        })
         productsViewModel.products.observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
         })

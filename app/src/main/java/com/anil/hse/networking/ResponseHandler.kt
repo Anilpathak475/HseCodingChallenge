@@ -1,7 +1,6 @@
 package com.anil.hse.networking
 
 import retrofit2.HttpException
-import java.lang.Exception
 import java.net.SocketTimeoutException
 
 enum class ErrorCodes(val code: Int) {

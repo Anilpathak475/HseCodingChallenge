@@ -2,16 +2,18 @@ package com.anil.hse.datasource
 
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
+import com.anil.hse.base.Coroutines
 import com.anil.hse.model.product.Product
-import com.anil.hse.networking.ApiResponse
-import com.anil.hse.networking.HseClient
+import com.anil.hse.networking.HseService
+import com.anil.hse.networking.ResponseHandler
 
 enum class State {
     DONE, LOADING, ERROR
 }
 
 class HseDataSource(
-    private val hseClient: HseClient
+    private val hseService: HseService,
+    private val responseHandler: ResponseHandler
 ) : PageKeyedDataSource<Int, Product>() {
 
     var state: MutableLiveData<State> = MutableLiveData()
@@ -21,48 +23,46 @@ class HseDataSource(
         callback: LoadInitialCallback<Int, Product>
     ) {
         updateState(State.LOADING)
-        hseClient.fetchProductByCategory(catId, 1, params.requestedLoadSize) { response ->
-            when (response) {
-                is ApiResponse.Success -> {
-                    response.data?.let {
-                        updateState(State.DONE)
+        try {
+            Coroutines.ioThenMain({
+                hseService.fetchProductsCategory(catId)
+            }, {
+                it?.let {
+                    responseHandler.handleSuccess(it).data?.products?.let { products ->
                         callback.onResult(
-                            response.data.products,
+                            products,
                             null,
                             2
                         )
                     }
-                }
-                is ApiResponse.Failure.Error -> {
+                } ?: run {
                     updateState(State.ERROR)
                 }
-                is ApiResponse.Failure.Exception -> {
-                    updateState(State.ERROR)
-                }
-            }
+            })
+        } catch (ex: Exception) {
+            updateState(State.ERROR)
         }
     }
 
     override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, Product>) {
         updateState(State.LOADING)
-        hseClient.fetchProductByCategory(catId, params.key, params.requestedLoadSize) { response ->
-            when (response) {
-                is ApiResponse.Success -> {
-                    response.data?.let {
-                        updateState(State.DONE)
+        try {
+            Coroutines.ioThenMain({
+                hseService.fetchProductsCategory(catId, params.key, params.requestedLoadSize)
+            }, {
+                it?.let {
+                    responseHandler.handleSuccess(it).data?.products?.let { products ->
                         callback.onResult(
-                            it.products,
+                            products,
                             params.key + 1
                         )
                     }
-                }
-                is ApiResponse.Failure.Error -> {
+                } ?: run {
                     updateState(State.ERROR)
                 }
-                is ApiResponse.Failure.Exception -> {
-                    updateState(State.ERROR)
-                }
-            }
+            })
+        } catch (ex: Exception) {
+            updateState(State.ERROR)
         }
     }
 

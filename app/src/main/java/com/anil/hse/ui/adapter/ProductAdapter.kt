@@ -27,15 +27,22 @@ class ProductAdapter(
         val product = getItem(position)
         product?.let {
             vh.itemView.textViewProductName.text = product.nameShort
-            vh.itemView.textViewPrice.text =
-                vh.itemView.resources.getString(
-                    R.string.price,
-                    product.productPrice.price.toString()
-                )
+            product.productPrice?.let {
+                vh.itemView.textViewPrice.text =
+                    vh.itemView.resources.getString(
+                        R.string.price,
+                        it.price.toString()
+                    )
+            }
             product.imageUris.isNotEmpty().let {
                 Glide
                     .with(vh.itemView)
-                    .load("https://pic.hse24-dach.net/media/de/products/" + product.imageUris.first() + "pics480.jpg")
+                    .load(
+                        vh.itemView.resources.getString(
+                            R.string.imageUrl,
+                            product.imageUris.first()
+                        )
+                    )
                     .centerCrop()
                     .placeholder(R.drawable.loading)
                     .into(vh.itemView.imageViewProduct)
