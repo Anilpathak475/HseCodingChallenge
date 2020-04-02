@@ -5,7 +5,7 @@ import androidx.lifecycle.Observer
 import com.anil.hse.base.Coroutines
 import com.anil.hse.model.product.Product
 import com.anil.hse.networking.Resource
-import com.anil.hse.persistance.entitiy.CartEntity
+import com.anil.hse.persistance.entitiy.Cart
 import com.anil.hse.repository.CartRepository
 import com.anil.hse.repository.ProductRepository
 import com.anil.hse.viewmodel.ProductsViewModel
@@ -30,7 +30,7 @@ class ProductViewModelTest {
     private lateinit var productRepository: ProductRepository
     private lateinit var cartRepository: CartRepository
     private lateinit var productObserver: Observer<Resource<Product>>
-    private lateinit var cartObserver: Observer<Resource<List<CartEntity>>>
+    private lateinit var cartObserver: Observer<Resource<List<Cart>>>
     private val validProductId = "321234"
     private val invalidProductInt = "qwerty"
     private val productSuccessResource = Resource.success(Product(sku = validProductId))

@@ -7,7 +7,7 @@ import androidx.lifecycle.switchMap
 import com.anil.hse.base.LiveCoroutinesViewModel
 import com.anil.hse.model.product.Product
 import com.anil.hse.networking.Resource
-import com.anil.hse.persistance.entitiy.CartEntity
+import com.anil.hse.persistance.entitiy.Cart
 import com.anil.hse.repository.CartRepository
 import com.anil.hse.repository.ProductRepository
 import kotlinx.coroutines.CoroutineScope
@@ -38,7 +38,7 @@ class ProductsViewModel constructor(
         }
     }
 
-    val cart: LiveData<List<CartEntity>> by lazy {
+    val cart: LiveData<List<Cart>> by lazy {
         this.posterFetchingLiveData.switchMap {
             launchOnViewModelScope {
                 this.cartRepository.load()
@@ -68,7 +68,7 @@ class ProductsViewModel constructor(
 
     fun fetchProductProductDetail(productId: String) = this.productId.postValue(productId)
 
-    private fun createNewCartItem(product: Product, quantity: Int) = CartEntity(
+    private fun createNewCartItem(product: Product, quantity: Int) = Cart(
         productId = product.sku,
         productName = product.nameShort,
         price = product.productPrice?.price?.toString() ?: run { "10" },

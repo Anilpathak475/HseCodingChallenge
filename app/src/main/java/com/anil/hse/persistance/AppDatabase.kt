@@ -2,13 +2,10 @@ package com.anil.hse.persistance
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import androidx.room.TypeConverter
-import com.anil.hse.model.product.Product
-import com.anil.hse.persistance.entitiy.CartEntity
-import com.google.gson.Gson
+import com.anil.hse.persistance.entitiy.Cart
 
 @Database(
-    entities = [CartEntity::class],
+    entities = [Cart::class],
     version = 1,
     exportSchema = false
 )

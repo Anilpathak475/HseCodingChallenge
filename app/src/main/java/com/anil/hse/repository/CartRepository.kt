@@ -2,7 +2,7 @@ package com.anil.hse.repository
 
 import com.anil.hse.base.Coroutines
 import com.anil.hse.persistance.CartDao
-import com.anil.hse.persistance.entitiy.CartEntity
+import com.anil.hse.persistance.entitiy.Cart
 
 class CartRepository constructor(
     private val cartDao: CartDao
@@ -12,29 +12,29 @@ class CartRepository constructor(
     fun load() =
         cartDao.getCartItems()
 
-    fun add(cartEntity: CartEntity) =
+    fun add(cart: Cart) =
         Coroutines.io {
-            cartDao.insert(cartEntity)
+            cartDao.insert(cart)
         }
 
-    private fun delete(cartEntity: CartEntity) =
+    private fun delete(cart: Cart) =
         Coroutines.io {
-            cartDao.delete(cartEntity)
+            cartDao.delete(cart)
         }
 
-    private fun delete(items: List<CartEntity>) =
+    private fun delete(items: List<Cart>) =
         Coroutines.io {
             cartDao.delete(items)
         }
 
-    fun update(cartEntity: CartEntity) {
-        if (cartEntity.quantity > 0)
-            add(cartEntity)
+    fun update(cart: Cart) {
+        if (cart.quantity > 0)
+            add(cart)
         else
-            delete(cartEntity)
+            delete(cart)
     }
 
-    fun checkout(cartItems: List<CartEntity>) {
+    fun checkout(cartItems: List<Cart>) {
         cartItems.apply {
             Coroutines.io {
                 forEach { it.isCheckOutDone = true }
@@ -43,7 +43,7 @@ class CartRepository constructor(
         }
     }
 
-    fun clear(cartItems: List<CartEntity>) {
+    fun clear(cartItems: List<Cart>) {
         delete(cartItems)
     }
 }

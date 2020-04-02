@@ -5,17 +5,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.anil.hse.R
-import com.anil.hse.persistance.entitiy.CartEntity
+import com.anil.hse.persistance.entitiy.Cart
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.item_cart.view.*
 
 class CartAdapter(
-    val onRemove: (CartEntity) -> Unit,
-    val onSelected: (CartEntity) -> Unit,
-    val onAdded: (CartEntity) -> Unit
+    val onRemove: (Cart) -> Unit,
+    val onSelected: (Cart) -> Unit,
+    val onAdded: (Cart) -> Unit
 ) :
     RecyclerView.Adapter<CartAdapter.CartViewHolder>() {
-    var cartItems = mutableListOf<CartEntity>()
+    var cartItems = mutableListOf<Cart>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CartViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
