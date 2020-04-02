@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.anil.hse.R
@@ -20,7 +19,7 @@ import kotlin.math.roundToInt
 class CartFragment : Fragment() {
 
     private val cartViewModel: CartViewModel by viewModel()
-    private lateinit var navigation: NavController
+    private val navigation by lazy { findNavController() }
     private val cartAdapter by lazy {
         CartAdapter(
             onSelected = { select -> this.onSelected(select) },
@@ -76,6 +75,6 @@ class CartFragment : Fragment() {
     private fun onSelected(cart: Cart) {
         val direction =
             CartFragmentDirections.actionCartFragmentToProductDetailsFragment(cart.productId)
-        findNavController().navigate(direction)
+        navigation.navigate(direction)
     }
 }

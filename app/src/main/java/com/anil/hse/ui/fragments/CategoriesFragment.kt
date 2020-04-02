@@ -24,16 +24,18 @@ class CategoriesFragment : Fragment() {
         CategoryAdapter { onCategorySelected(it.categoryId.toString()) }
     }
 
-    private val observer = Observer<Resource<Category>> {
-        when (it.status) {
-            Status.SUCCESS -> it?.let {
-                it.data?.children?.let { categories ->
-                    adapter.categories = categories
-                    adapter.notifyDataSetChanged()
+    private val observer by lazy {
+        Observer<Resource<Category>> {
+            when (it.status) {
+                Status.SUCCESS -> it?.let {
+                    it.data?.children?.let { categories ->
+                        adapter.categories = categories
+                        adapter.notifyDataSetChanged()
+                    }
                 }
+                Status.ERROR -> it.message?.let { error -> showError(error) }
+                Status.LOADING -> showLoading()
             }
-            Status.ERROR -> it.message?.let { error -> showError(error) }
-            Status.LOADING -> showLoading()
         }
     }
 

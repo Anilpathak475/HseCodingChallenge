@@ -11,15 +11,14 @@ import kotlinx.coroutines.Dispatchers
 class CategoryViewModel constructor(
     private val categoryRepository: CategoryRepository
 ) : LiveCoroutinesViewModel() {
-    private var posterFetchingLiveData: MutableLiveData<Boolean> = MutableLiveData()
-    val toastLiveData: MutableLiveData<String> = MutableLiveData()
+    private var loadCategoryData: MutableLiveData<Boolean> = MutableLiveData()
 
-    var categories = posterFetchingLiveData.switchMap {
+    var categories = loadCategoryData.switchMap {
         liveData(Dispatchers.IO) {
             emit(Resource.loading(null))
             emit(categoryRepository.loadCategories())
         }
     }
 
-    fun fetchCategories() = posterFetchingLiveData.postValue(true)
+    fun fetchCategories() = loadCategoryData.postValue(true)
 }

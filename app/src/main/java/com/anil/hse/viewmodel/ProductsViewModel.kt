@@ -17,7 +17,7 @@ class ProductsViewModel constructor(
     private val cartRepository: CartRepository
 ) : LiveCoroutinesViewModel() {
 
-    private val posterFetchingLiveData
+    private val loadProduct
             by lazy { MutableLiveData<Boolean>() }
 
     private val productId
@@ -39,11 +39,11 @@ class ProductsViewModel constructor(
     }
 
     init {
-        this.posterFetchingLiveData.postValue(true)
+        this.loadProduct.postValue(true)
     }
 
     val cart: LiveData<List<Cart>> by lazy {
-        this.posterFetchingLiveData.switchMap {
+        this.loadProduct.switchMap {
             launchOnViewModelScope {
                 this.cartRepository.load()
             }
@@ -53,17 +53,15 @@ class ProductsViewModel constructor(
     fun setCategory(catId: String) =
         productRepository.setCatId(catId)
 
-
-    fun reloadCartItems() = this.posterFetchingLiveData.postValue(true)
-
-    fun addItemInCart(product: Product, quantity: Int) {
+    fun addItemInCart(product: Product, quantity: Int, result: (String) -> Unit) {
         val isAlreadyAdded =
             cart.value?.firstOrNull { cartEntity -> cartEntity.productId == product.sku }
         isAlreadyAdded?.let {
-            this.cartNotification.postValue("Item is already present in Cart.")
+            result("Already In Database")
         } ?: run {
             cartRepository.add(createNewCartItem(product, quantity))
-            this.cartNotification.postValue("Item added in Cart. ")
+            result("Success")
+
         }
     }
 

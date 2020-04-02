@@ -19,6 +19,8 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class ProductsFragment : Fragment() {
     private val productsViewModel: ProductsViewModel by viewModel()
 
+    private val navigation by lazy { findNavController() }
+
     private val adapter by lazy {
         ProductAdapter(
             { onProductDetail(it) },
@@ -60,8 +62,7 @@ class ProductsFragment : Fragment() {
             layoutManager = LinearLayoutManager(this@ProductsFragment.context)
         }
 
-        layoutCart.setOnClickListener { findNavController().navigate(ProductsFragmentDirections.actionProductsFragmentToCartFragment()) }
-        productsViewModel.reloadCartItems()
+        layoutCart.setOnClickListener { navigation.navigate(ProductsFragmentDirections.actionProductsFragmentToCartFragment()) }
     }
 
     private fun showError(error: String) =
@@ -72,10 +73,12 @@ class ProductsFragment : Fragment() {
             ProductsFragmentDirections.actionProductsFragmentToProductDetailsFragment(
                 product.sku
             )
-        findNavController().navigate(directions)
+        navigation.navigate(directions)
     }
 
-    private fun onProductAddToCart(product: Product) {
-        productsViewModel.addItemInCart(product, 1)
-    }
+    private fun onProductAddToCart(product: Product) =
+        productsViewModel.addItemInCart(product, 1) {
+            showError(it)
+        }
+
 }

@@ -12,17 +12,17 @@ class CartViewModel constructor(
 ) : LiveCoroutinesViewModel() {
 
     val cart: LiveData<List<Cart>>
-    private var posterFetchingLiveData: MutableLiveData<Boolean> = MutableLiveData()
+    private var loadCartData: MutableLiveData<Boolean> = MutableLiveData()
 
     init {
-        cart = this.posterFetchingLiveData.switchMap {
+        cart = this.loadCartData.switchMap {
             launchOnViewModelScope {
                 this.cartRepository.load()
             }
         }
     }
 
-    fun loadCart() = this.posterFetchingLiveData.postValue(true)
+    fun loadCart() = this.loadCartData.postValue(true)
     fun updateCart(cart: Cart) {
         cartRepository.update(cart)
     }

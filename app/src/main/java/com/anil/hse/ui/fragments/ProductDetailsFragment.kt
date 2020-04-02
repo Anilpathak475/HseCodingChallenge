@@ -1,6 +1,7 @@
 package com.anil.hse.ui.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.anil.hse.R
+import com.anil.hse.base.gone
+import com.anil.hse.base.visible
 import com.anil.hse.model.product.Product
 import com.anil.hse.networking.Resource
 import com.anil.hse.networking.Status
@@ -22,7 +25,11 @@ class ProductDetailsFragment : Fragment() {
     private val productsViewModel: ProductsViewModel by viewModel()
 
     private val productId by lazy {
-        arguments?.let { ProductDetailsFragmentArgs.fromBundle(it).productId }
+        Log.d("argumets", arguments.toString())
+        arguments?.let { ProductDetailsFragmentArgs.fromBundle(it).productId } ?: run {
+            showError("empty product id")
+            ""
+        }
     }
 
     private val imageAdapter by lazy {
@@ -47,9 +54,11 @@ class ProductDetailsFragment : Fragment() {
                         productsViewModel.addItemInCart(
                             product,
                             1
-                        )
+                        ) { status -> showError(status) }
                     }
                 }
+                layoutData.visible()
+                loading.gone()
             }
             Status.ERROR -> it.message?.let { error -> showError(error) }
             Status.LOADING -> showLoading()
@@ -60,15 +69,14 @@ class ProductDetailsFragment : Fragment() {
         Toast.makeText(activity, error, Toast.LENGTH_SHORT).show()
 
     private fun showLoading() {
-
+        layoutData.gone()
+        loading.visible()
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_product_details, container, false)
-    }
+    ): View? = inflater.inflate(R.layout.fragment_product_details, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -80,21 +88,19 @@ class ProductDetailsFragment : Fragment() {
                 false
             )
         }
-        productId?.let { productsViewModel.fetchProductProductDetail(it) }
         productsViewModel.product.observe(viewLifecycleOwner, observer)
         productsViewModel.cart.observe(viewLifecycleOwner, Observer {
-            it.find { cart -> cart.productId == productId }?.let { cart ->
-                cart.let {
-                    buttProductDetailAddToCart.visibility = View.GONE
-                }
+            it.find { cart -> cart.productId == productId }?.let {
+                buttProductDetailAddToCart.visibility = View.GONE
             }
         })
 
         productsViewModel.cartNotification.observe(viewLifecycleOwner, Observer {
             showError(it)
         })
-
-
+        productId.let {
+            Log.d("Product Id", productId)
+            productsViewModel.fetchProductProductDetail(it)
+        }
     }
-
 }

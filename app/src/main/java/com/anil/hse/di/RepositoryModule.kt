@@ -10,15 +10,11 @@ import com.anil.hse.repository.ProductRepository
 import org.koin.dsl.module
 
 val repositoryModule = module {
-    single {
-        CategoryRepository(
-            get(), get()
-        )
-    }
+    single { CategoryRepository(get(), get()) }
     single { ProductRepository(get(), get(), get()) }
     single { CartRepository(get()) }
-    factory { provideHseDataSource(get(), get()) }
-    factory { provideHseDataSourceFactory(get()) }
+    single { provideHseDataSource(get(), get()) }
+    single { provideHseDataSourceFactory(get()) }
 
 }
 

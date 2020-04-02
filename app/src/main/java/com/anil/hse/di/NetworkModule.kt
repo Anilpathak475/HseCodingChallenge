@@ -34,7 +34,7 @@ private fun provideOkHttpClient(
 
 private fun provideLoggingInterceptor(): HttpLoggingInterceptor {
     val logger = HttpLoggingInterceptor()
-    logger.level = HttpLoggingInterceptor.Level.BASIC
+    logger.level = HttpLoggingInterceptor.Level.BODY
     return logger
 }
 

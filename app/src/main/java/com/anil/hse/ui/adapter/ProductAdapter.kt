@@ -7,6 +7,7 @@ import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.anil.hse.R
+import com.anil.hse.base.gone
 import com.anil.hse.model.product.Product
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.item_product.view.*
@@ -34,13 +35,13 @@ class ProductAdapter(
                         it.price.toString()
                     )
             }
-            product.imageUris.isNotEmpty().let {
+            with(product.imageUris.first()) {
                 Glide
                     .with(vh.itemView)
                     .load(
                         vh.itemView.resources.getString(
                             R.string.imageUrl,
-                            product.imageUris.first()
+                            this
                         )
                     )
                     .centerCrop()
@@ -53,18 +54,18 @@ class ProductAdapter(
                 addToCart(product)
             }
         } ?: run {
-            vh.itemView.visibility = View.GONE
+            vh.itemView.gone()
         }
     }
 
     companion object {
         val ProductDiffCallback = object : DiffUtil.ItemCallback<Product>() {
             override fun areItemsTheSame(oldItem: Product, newItem: Product): Boolean {
-                return oldItem.sku == newItem.sku
+                return oldItem == newItem
             }
 
             override fun areContentsTheSame(oldItem: Product, newItem: Product): Boolean {
-                return oldItem.sku == newItem.sku
+                return oldItem == newItem
             }
         }
     }
