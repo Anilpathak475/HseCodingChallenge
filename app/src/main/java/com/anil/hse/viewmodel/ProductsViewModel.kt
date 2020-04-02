@@ -10,9 +10,7 @@ import com.anil.hse.networking.Resource
 import com.anil.hse.persistance.entitiy.Cart
 import com.anil.hse.repository.CartRepository
 import com.anil.hse.repository.ProductRepository
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class ProductsViewModel constructor(
     private val productRepository: ProductRepository,
@@ -24,18 +22,24 @@ class ProductsViewModel constructor(
 
     private val productId
             by lazy { MutableLiveData<String>() }
+    val cartNotification
+            by lazy { MutableLiveData<String>() }
 
 
     val products by lazy {
         productRepository.loadProductByCategories()
     }
-    var product = posterFetchingLiveData.switchMap {
+    var product = productId.switchMap {
         liveData(Dispatchers.IO) {
             emit(Resource.loading(null))
             productId.value?.let {
                 emit(productRepository.loadProductDetails(productId = it))
             }
         }
+    }
+
+    init {
+        this.posterFetchingLiveData.postValue(true)
     }
 
     val cart: LiveData<List<Cart>> by lazy {
@@ -55,14 +59,11 @@ class ProductsViewModel constructor(
     fun addItemInCart(product: Product, quantity: Int) {
         val isAlreadyAdded =
             cart.value?.firstOrNull { cartEntity -> cartEntity.productId == product.sku }
-        val cartEntity = isAlreadyAdded?.let {
-            it.quantity = quantity
-            it
+        isAlreadyAdded?.let {
+            this.cartNotification.postValue("Item is already present in Cart.")
         } ?: run {
-            createNewCartItem(product, quantity)
-        }
-        CoroutineScope(Dispatchers.IO).launch {
-            cartRepository.add(cartEntity)
+            cartRepository.add(createNewCartItem(product, quantity))
+            this.cartNotification.postValue("Item added in Cart. ")
         }
     }
 

@@ -26,10 +26,11 @@
                 android:id="@+id/textViewCartProductName"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
                 android:layout_marginEnd="8dp"
                 android:textSize="24sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/textViewCartPrice"
+                app:layout_constraintStart_toEndOf="@+id/imageViewCartProduct"
                 app:layout_constraintTop_toTopOf="@+id/imageViewCartProduct" />
 
             <TextView
@@ -37,19 +38,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
-                android:layout_marginTop="16dp"
+                android:textSize="24sp"
+                app:layout_constraintBottom_toBottomOf="@+id/textviewRemove"
                 app:layout_constraintStart_toEndOf="@+id/imageViewCartProduct"
-                app:layout_constraintTop_toBottomOf="@+id/textViewCartProductName" />
+                app:layout_constraintTop_toTopOf="@+id/textviewRemove" />
 
             <TextView
                 android:id="@+id/textviewAdd"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
                 android:padding="5dp"
                 android:text="+"
                 android:textSize="24sp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textViewCartProductName" />
 
