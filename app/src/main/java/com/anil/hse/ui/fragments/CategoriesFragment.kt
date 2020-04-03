@@ -29,8 +29,7 @@ class CategoriesFragment : Fragment() {
             when (it.status) {
                 Status.SUCCESS -> it?.let {
                     it.data?.children?.let { categories ->
-                        adapter.categories = categories
-                        adapter.notifyDataSetChanged()
+                        adapter.setCategoriesData(categories)
                     }
                 }
                 Status.ERROR -> it.message?.let { error -> showError(error) }

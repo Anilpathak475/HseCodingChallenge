@@ -36,8 +36,7 @@ class CartFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         cartViewModel.cart.observe(viewLifecycleOwner, Observer { entityList ->
             if (entityList.isNotEmpty()) {
-                cartAdapter.cartItems = entityList as MutableList<Cart>
-                cartAdapter.notifyDataSetChanged()
+                cartAdapter.setCartDetails(entityList)
                 val totalAmount =
                     entityList.map { it.price.toDouble() * it.quantity }.sumByDouble { it }
                         .roundToInt()

@@ -15,7 +15,13 @@ class CartAdapter(
     val onAdded: (Cart) -> Unit
 ) :
     RecyclerView.Adapter<CartAdapter.CartViewHolder>() {
-    var cartItems = mutableListOf<Cart>()
+    var cartItems = emptyList<Cart>()
+
+    fun setCartDetails(cartItems: List<Cart>) {
+        this.cartItems = cartItems
+        notifyDataSetChanged()
+    }
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CartViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)

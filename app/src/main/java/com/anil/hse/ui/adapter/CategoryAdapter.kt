@@ -12,6 +12,12 @@ class CategoryAdapter(
     val onSelected: (category: Category) -> Unit
 ) : RecyclerView.Adapter<CategoryAdapter.CartViewHolder>() {
     var categories = listOf<Category>()
+    fun setCategoriesData(
+        categories: List<Category>
+    ) {
+        this.categories = categories
+        notifyDataSetChanged()
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CartViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)

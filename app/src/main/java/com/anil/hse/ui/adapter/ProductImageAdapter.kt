@@ -10,6 +10,10 @@ import kotlinx.android.synthetic.main.item_product_image.view.*
 
 class ProductImageAdapter : RecyclerView.Adapter<ProductImageAdapter.ProductImageViewHolder>() {
     var urls = listOf<String>()
+    fun setImageData(urls: List<String>) {
+        this.urls = urls
+        notifyDataSetChanged()
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductImageViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)

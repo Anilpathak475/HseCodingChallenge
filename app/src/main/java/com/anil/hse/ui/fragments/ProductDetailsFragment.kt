@@ -42,8 +42,7 @@ class ProductDetailsFragment : Fragment() {
 
                     textViewDescription.text =
                         product.longDescription
-                    imageAdapter.urls = product.imageUris
-                    imageAdapter.notifyDataSetChanged()
+                    imageAdapter.setImageData(product.imageUris)
                     buttProductDetailAddToCart.setOnClickListener {
                         productsViewModel.addItemInCart(
                             product,
