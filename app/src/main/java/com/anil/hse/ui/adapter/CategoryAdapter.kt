@@ -5,7 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.anil.hse.R
-import com.anil.hse.model.Category
+import com.anil.hse.data.model.Category
 import kotlinx.android.synthetic.main.item_category.view.*
 
 class CategoryAdapter(

@@ -2,7 +2,7 @@ package com.anil.hse.di
 
 import androidx.room.Room
 import com.anil.hse.R
-import com.anil.hse.persistance.AppDatabase
+import com.anil.hse.data.persistance.AppDatabase
 import org.koin.android.ext.koin.androidApplication
 import org.koin.dsl.module
 

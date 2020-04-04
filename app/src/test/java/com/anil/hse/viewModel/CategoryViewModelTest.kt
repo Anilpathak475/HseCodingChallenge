@@ -3,10 +3,10 @@ package com.anil.hse.viewModel
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import com.anil.hse.base.Coroutines
-import com.anil.hse.model.Category
-import com.anil.hse.networking.Resource
-import com.anil.hse.repository.CategoryRepository
-import com.anil.hse.viewmodel.CategoryViewModel
+import com.anil.hse.data.model.Category
+import com.anil.hse.data.repository.CategoryRepository
+import com.anil.hse.network.Resource
+import com.anil.hse.ui.viewmodel.CategoryViewModel
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.timeout
 import com.nhaarman.mockitokotlin2.verify

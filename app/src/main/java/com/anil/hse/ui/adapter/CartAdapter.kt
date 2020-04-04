@@ -5,7 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.anil.hse.R
-import com.anil.hse.persistance.entitiy.Cart
+import com.anil.hse.data.persistance.entitiy.Cart
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.item_cart.view.*
 

@@ -11,11 +11,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.anil.hse.R
 import com.anil.hse.base.gone
 import com.anil.hse.base.visible
-import com.anil.hse.model.Product
-import com.anil.hse.networking.Resource
-import com.anil.hse.networking.Status
+import com.anil.hse.data.model.Product
+import com.anil.hse.network.Resource
+import com.anil.hse.network.Status
 import com.anil.hse.ui.adapter.ProductImageAdapter
-import com.anil.hse.viewmodel.ProductsViewModel
+import com.anil.hse.ui.viewmodel.ProductsViewModel
 import kotlinx.android.synthetic.main.fragment_product_details.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 

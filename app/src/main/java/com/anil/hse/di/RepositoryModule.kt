@@ -1,12 +1,12 @@
 package com.anil.hse.di
 
-import com.anil.hse.datasource.HseDataSource
-import com.anil.hse.datasource.HseDataSourceFactory
-import com.anil.hse.networking.HseService
-import com.anil.hse.networking.ResponseHandler
-import com.anil.hse.repository.CartRepository
-import com.anil.hse.repository.CategoryRepository
-import com.anil.hse.repository.ProductRepository
+import com.anil.hse.data.datasource.HseDataSource
+import com.anil.hse.data.datasource.HseDataSourceFactory
+import com.anil.hse.data.repository.CartRepository
+import com.anil.hse.data.repository.CategoryRepository
+import com.anil.hse.data.repository.ProductRepository
+import com.anil.hse.network.HseService
+import com.anil.hse.network.ResponseHandler
 import org.koin.dsl.module
 
 val repositoryModule = module {

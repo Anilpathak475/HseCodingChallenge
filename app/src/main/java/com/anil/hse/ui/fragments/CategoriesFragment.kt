@@ -10,11 +10,11 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.anil.hse.R
-import com.anil.hse.model.Category
-import com.anil.hse.networking.Resource
-import com.anil.hse.networking.Status
+import com.anil.hse.data.model.Category
+import com.anil.hse.network.Resource
+import com.anil.hse.network.Status
 import com.anil.hse.ui.adapter.CategoryAdapter
-import com.anil.hse.viewmodel.CategoryViewModel
+import com.anil.hse.ui.viewmodel.CategoryViewModel
 import kotlinx.android.synthetic.main.fragment_categories.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 

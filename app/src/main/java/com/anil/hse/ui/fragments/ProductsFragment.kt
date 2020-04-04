@@ -8,11 +8,10 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.anil.hse.R
-import com.anil.hse.model.Product
+import com.anil.hse.data.model.Product
 import com.anil.hse.ui.adapter.ProductAdapter
-import com.anil.hse.viewmodel.ProductsViewModel
+import com.anil.hse.ui.viewmodel.ProductsViewModel
 import kotlinx.android.synthetic.main.fragment_products.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -42,11 +41,7 @@ class ProductsFragment : Fragment() {
         categoryId?.let { productsViewModel.setCategory(it) }
         observeData()
 
-        recyclerviewProducts.apply {
-            adapter = this@ProductsFragment.adapter
-            layoutManager = LinearLayoutManager(this@ProductsFragment.context)
-        }
-
+        recyclerviewProducts.adapter = adapter
         layoutCart.setOnClickListener { navigation.navigate(ProductsFragmentDirections.actionProductsFragmentToCartFragment()) }
     }
 

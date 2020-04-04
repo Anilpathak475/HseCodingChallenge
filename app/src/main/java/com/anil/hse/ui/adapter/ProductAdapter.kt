@@ -7,7 +7,7 @@ import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.anil.hse.R
-import com.anil.hse.model.Product
+import com.anil.hse.data.model.Product
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.item_product.view.*
 

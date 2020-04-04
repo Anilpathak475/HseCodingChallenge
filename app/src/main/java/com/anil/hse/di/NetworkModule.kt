@@ -1,8 +1,8 @@
 package com.anil.hse.di
 
-import com.anil.hse.networking.AuthInterceptor
-import com.anil.hse.networking.HseService
-import com.anil.hse.networking.ResponseHandler
+import com.anil.hse.network.AuthInterceptor
+import com.anil.hse.network.HseService
+import com.anil.hse.network.ResponseHandler
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.dsl.module
